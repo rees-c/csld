@@ -832,7 +832,7 @@ def init_ld_model(prim, setting, setting_ldff, clus_step, symC_step, ldff_step, 
         model = LDModel.from_file(prim, setting['cluster_in'], **spec)
     elif clus_step in [2, 3]:
         model = LDModel.generate_clusters(prim, **spec)
-        model.cleanup()
+        # model.cleanup()
         if clus_step == 3:
             model.save_clusters(setting['cluster_out'])
     else:
@@ -840,7 +840,7 @@ def init_ld_model(prim, setting, setting_ldff, clus_step, symC_step, ldff_step, 
         exit(-1)
     print("+ Obtained %d proper clusters" %(len(model.clusters)), model.tally())
     model.generate_improper()
-    model.cleanup()
+    # model.cleanup()
     model.get_orbit_isotropy()
     model.prepare_index_full()
 
