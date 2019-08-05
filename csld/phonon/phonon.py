@@ -454,13 +454,19 @@ class Phonon():
         #                f.write("%d %d %d %d %d %s\n"%(ia1+1,ls[0]+1,ls[1]+1,ls[2]+1,ia2+1,matrix2text(hmat[ia1,0,:,ia2,l,:].reshape(-1))))
         # new compact format
         with open('FORCE_CONSTANTS_2ND', 'w') as f:
-            f.write("%d %d\n"%(na, na*Nsc))
-            index=np.arange(na*Nsc).reshape((na,*(np.diag(sc.sc_mat)[::-1])))
-            for ia1 in range(na):
-                for ia2 in range(na):
-                    for l,ls in enumerate(sc.ijk_ref):
-                        f.write("%d %d\n%s\n"%(index[ia1,0,0,0]+1,index[ia2,ls[2],ls[1],ls[0]]+1,matrix2text(hmat[ia1,0,:,ia2,l,:])))
-
+            #            f.write("%d %d\n"%(na, na*Nsc))
+            f.write("%d \n" % (na * Nsc))
+            index = np.arange(na * Nsc).reshape(
+                (na, *(np.diag(sc.sc_mat)[::-1])))
+            print(index)
+            for scindex in range(Nsc):
+                for ia1 in range(na):
+                    for ia2 in range(na):
+                        for l, ls in enumerate(sc.ijk_ref):
+                            f.write("%d %d\n%s\n" % (
+                            index[ia1, 0, 0, 0] + 1 + scindex,
+                            index[ia2, ls[2], ls[1], ls[0]] + 1,
+                            matrix2text(hmat[ia1, scindex, :, ia2, l, :])))
 
     def covariance_matrix_in_supercell(self, sc, T):
         from ..util.units import kBbyeV, eVAng_to_THz
